@@ -13,7 +13,7 @@
         $.ajax({
             url: 'https://uyclouds.com/uyapi/vedio_list.php?keeper=888888&api=6666',
             type: 'POST',
-            dataType: 'json',
+            dataType: 'jsonp',
             success: function(data) {
                 var result = '';
                 if (data.code === 'true') {
