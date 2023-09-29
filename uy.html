@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API POST请求示例</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id="result"></div>
+
+    <script>
+        $.ajax({
+            url: 'https://uyclouds.com/uyapi/vedio_list.php?keeper=888888&api=6666',
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+                var result = '';
+                if (data.code === 'true') {
+                    result += '<p>' + data.msg + '</p>';
+                    result += '<ul>';
+                    for (var i = 0; i < data.listdata.length; i++) {
+                        result += '<li>';
+                        result += '<img src="' + data.listdata[i].img + '" alt="图片">';
+                        result += '<a href="' + data.listdata[i].name + '">' + data.listdata[i].name + '</a>';
+                        result += '<p>' + data.listdata[i].content + '</p>';
+                        result += '<p>作者：' + data.listdata[i].auther + '</p>';
+                        result += '<p>VIP：' + data.listdata[i].ifvip + '</p>';
+                        result += '<p>U币数量：' + data.listdata[i].uycoinnum + '</p>';
+                        result += '<p>更多：' + data.listdata[i].ifmore + '</p>';
+                        result += '</li>';
+                    }
+                    result += '</ul>';
+                    $('#result').html(result);
+                } else {
+                    $('#result').html('<p>获取失败，错误信息：' + data.msg + '</p>');
+                }
+            },
+            error: function() {
+                $('#result').html('<p>获取失败，请检查网络连接或API地址是否正确。</p>');
+            }
+        });
+    </script>
+</body>
+</html>
