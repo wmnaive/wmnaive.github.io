@@ -25,7 +25,7 @@
 
 	</div>
 	<div class="mdui-appbar mdui-appbar-fixed">
-		<div class="mdui-toolbar mdui-color-theme">
+		<div class="mdui-toolbar" style="backdrop-filter: blur(20px);">
 			<button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#main-drawer'}"><i
 					class="mdui-icon material-icons">menu</i></button>
 			<a href="javascript:;" class="mdui-typo-title" id="main-title">WM NAIVE</a>
@@ -34,10 +34,10 @@
 					class="mdui-icon material-icons">more_vert</i></button>
 			<ul class="mdui-menu" id="main-menu">
 				<li class="mdui-menu-item">
-					<a href="javascript:tip();" class="mdui-ripple">公告</a>
+					<a href="javascript:tip();" class="mdui-ripple">公告💭</a>
 				</li>
 				<li class="mdui-menu-item">
-					<a href="javascript:changeTheme();" class="mdui-ripple">切换主题</a>
+					<a href="javascript:changeTheme();" class="mdui-ripple">切换主题🔳</a>
 				</li>
 			</ul>
 		</div>
@@ -46,16 +46,16 @@
 		<img height="20%" width="100%" src="images/material.png"/>
 		<ul class="mdui-list">
 			<li class="mdui-subheader">WebSite</li>
-			<li class="mdui-list-item mdui-ripple" onclick="window.open('http://www.okck.fun/');">
+			<li class="mdui-list-item mdui-ripple" onclick="javascript:location.reload();">
 				<i class="mdui-list-item-icon mdui-icon material-icons">home</i>
 				<div class="mdui-list-item-content">主页</div>
 			</li>
-			<li class="mdui-list-item mdui-ripple" >
+			<li class="mdui-list-item mdui-ripple" onclick="window.location.href='https://www.wmnaive.cn/wz';">
 				<i class="mdui-list-item-icon mdui-icon material-icons">library_books</i>
 				<div class="mdui-list-item-content">文章</div>
 			</li>
 			<li class="mdui-subheader">Procedure</li>
-			<li class="mdui-list-item mdui-ripple" >
+			<li class="mdui-list-item mdui-ripple" onclick="window.open('http://www.wmnaive.cn/jnds');">
 				<i class="mdui-list-item-icon mdui-icon material-icons">dashboard</i>
 				<div class="mdui-list-item-content">技能大赛</div>
 			</li>
@@ -175,7 +175,7 @@
 		$(window).scroll(function () {
 			var scrollTop = $(window).scrollTop();
 			if (scrollTop > 80) {
-				$('#main-title').text('WM NAIVE');
+				$('#main-title').text('WM NAIVE😎');
 				$('#sub-title').removeClass('rotateInDownLeft');
 				$('#sub-title').addClass('animated');
 				$('#sub-title').addClass('rotateOutUpLeft');
@@ -183,7 +183,7 @@
 				$('#main-title').addClass('animated');
 				$('#main-title').addClass('fadeInUp');
 			} else {
-				$('#main-title').text('WM');
+				$('#main-title').text('WM💕');
 				$('#sub-title').removeClass('rotateOutUpLeft');
 				$('#sub-title').addClass('animated');
 				$('#sub-title').addClass('rotateInDownLeft');
@@ -192,6 +192,69 @@
 				$('#main-title').addClass('fadeInDown');
 			}
 		});
+	</script>
+	<script src="https://unpkg.com/js-bullets@latest/dist/BulletJs.min.js"></script>
+	<script>
+		const danmuList = [
+			"你好科比布莱恩特",
+			"这个老哥的评论说的很对啊，这都能被违规隐藏？是戳痛到某些人了吗。",
+			"rip....",
+			"resepct",
+			"😂❤️😍😒👌☺️☺️😊😭😩😩😔😏😁👍🏿😁😏😏😔💕😭😘😊❤️😍",
+			"圣何塞-穆里尼奥",
+			"泰伦卢，泰伦卢，泰伦卢，泰伦卢",
+			"勒布朗-詹姆斯",
+			"emoji",
+			"湖人阵容也不是特别豪华为什么能打到西部第一？ 由高田大叔 发表在篮球·湿乎乎的话题-说的很对啊，很对啊",
+			"----huhuh---hahahha---",
+			"😂❤️😍😒👌☺️☺️😊😭😩😩😔😏😁👍🏿😁😏😏😔💕😭😘😊❤️😍"
+		]
+	
+		const getRandom2 = (min, max) => parseInt(Math.random() * (max - min + 1)) + min
+	
+		const danmuTest = {
+			screen: null,
+			handler: null,
+			dom: {
+				closeTime: document.querySelector('.close-time'),
+				openTime: document.querySelector('.open-time'),
+				sendDanmu: document.querySelector('#sendDanmu'),
+				dInput: document.querySelector('#d-input'),
+				pauseAll: document.querySelector('#pauseAll'),
+				continueAll: document.querySelector('#continueAll'),
+			},
+			init() {
+				this.eventInit();
+				this.screen = new BulletJs('.screen', {
+					trackHeight: 35,
+					speed: undefined,
+					pauseOnClick: true,
+					pauseOnHover: true,
+				});
+				this.sendDanmu();
+			},
+			sendDanmu() {
+				this.sendAction();
+			},
+			sendAction() {
+				this.handler = setInterval(() => {
+					const index = getRandom2(0, 10);
+					const str = danmuList[index];
+					const dom = `<span>${str}</span>`
+					this.screen.push(dom)
+				}, 1000);
+			},
+			eventInit() {
+				this.dom.closeTime.addEventListener('click', () => {
+					this.closeTime()
+				})
+				this.dom.openTime.addEventListener('click', () => {
+					this.sendDanmu()
+				})
+			}
+		}
+	
+		danmuTest.init()
 	</script>
 </body>
 
