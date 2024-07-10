@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+	<meta name="renderer" content="webkit" />
+	<meta name="force-rendering" content="webkit" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="author" content="沐风" />
+	<meta name="description" content="想知道这个页面有什么就进来看呀~" />
+	<meta name="keywords" content="沐风,沐朽阁,个人主页" />
+	<link rel="stylesheet" href="../css/mdui.min.css" />
+	<link rel="stylesheet" href="../css/load.css">
+	<link rel="stylesheet" href="https://unpkg.com/animate.css@3.5.2/animate.min.css" />
+	<title>WM NIAVE 技能大赛</title>
+	<style>
+		.mdui-card {
+			width: 300px;
+			border-radius: 10px;
+		}
+
+		.widthlo {
+			width: 444px;
+		}
+
+		.mdui-btn {
+			border-radius: 5px;
+		}
+	</style>
+</head>
+
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-layout-auto">
+
+	<div class="loading-animations" id="loading-warp">
+		<div class="la-ball-clip-rotate">
+			<div></div>
+		</div>
+
+	</div>
+	<div class="mdui-appbar mdui-appbar-fixed">
+		<div class="mdui-toolbar mdui-color-theme">
+			<button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#main-drawer'}"><i
+					class="mdui-icon material-icons">menu</i></button>
+			<a href="javascript:;" class="mdui-typo-title" id="main-title">WM NAIVE</a>
+			<div class="mdui-toolbar-spacer"></div>
+			<button class="mdui-btn mdui-btn-icon" mdui-menu="{target:'#main-menu'}"><i
+					class="mdui-icon material-icons">more_vert</i></button>
+			<ul class="mdui-menu" id="main-menu">
+				<li class="mdui-menu-item">
+					<a href="javascript:tip();" class="mdui-ripple">公告</a>
+				</li>
+				<li class="mdui-menu-item">
+					<a href="javascript:changeTheme();" class="mdui-ripple">切换主题</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="mdui-drawer" id="main-drawer">
+		<img height="20%" width="100%" src="../images/material.png" />
+		<ul class="mdui-list">
+			<li class="mdui-subheader">WebSite</li>
+			<li class="mdui-list-item mdui-ripple" onclick="javascript:location.reload();">
+				<i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+				<div class="mdui-list-item-content">主页</div>
+			</li>
+			<li class="mdui-list-item mdui-ripple" onclick="window.location.href='https://www.wmnaive.cn/wz';">
+				<i class="mdui-list-item-icon mdui-icon material-icons">library_books</i>
+				<div class="mdui-list-item-content">文章</div>
+			</li>
+			<li class="mdui-subheader">Procedure</li>
+			<li class="mdui-list-item mdui-ripple" onclick="window.open('http://www.wmnaive.cn/jnds');">
+				<i class="mdui-list-item-icon mdui-icon material-icons">dashboard</i>
+				<div class="mdui-list-item-content">技能大赛</div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="mdui-color-theme mdui-typo-display-1 mdui-text-color-white mdui-text-center" style="padding:80px;">
+		<div id="sub-title"><span style="font-size:60px;">数字媒体</span>技能大赛培训</div>
+	</div>
+
+	<div class="mdui-container mdui-m-y-2">
+		<div class="widthlo mdui-center">
+			<div class="mdui-p-a-2" id="login">
+				<div class="mdui-card-primary mdui-text-center">
+					<div class="mdui-card-primary-title">登录</div>
+					<div class="mdui-card-primary-subtitle">请输入你的个人授权码进入</div>
+				</div>
+				<div class="mdui-card-content">
+					<div class="mdui-textfield mdui-textfield-floating-label">
+						<label class="mdui-textfield-label">密码<span id="passts"></span></label>
+						<input class="mdui-textfield-input" type="password" id="searchInput">
+					</div>
+				</div>
+				<div class="mdui-card-actions">
+					<button class="mdui-btn mdui-float-right mdui-color-theme-accent" onclick="searchData()">登录</button>
+				</div>
+			</div>
+		</div>
+		<div class="mdui-table-fluid">
+			<table class="mdui-table mdui-table-hoverable">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Username</th>
+					</tr>
+				</thead>
+				<tbody id="results">
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<!-- footer -->
+	<div class="mdui-divider"></div>
+	<div class="mdui-p-y-2 mdui-color-theme mdui-text-color-white mdui-text-center">
+		<a class="mdui-btn mdui-btn-icon" href="mailto:169973282@qq.com"><i
+				class="mdui-icon material-icons">email</i></a><br>
+		<span>您在本页面停留了：<span id="stayTime"></span></span><br>
+		<span>©Copyright 2023 WM</span>
+	</div>
+	<script>
+		// 模拟一些数据
+		var data = [
+			{"id":"1", "name": "wwww", "age": 30, "city": "北京" },
+			{"id":"1", "name": "qqqq", "age": 25, "city": "上海" },
+			{"id":"1", "name": "qqq", "age": 35, "city": "深圳" }
+		];
+
+		function searchData() {
+			var searchName = document.getElementById("searchInput").value;
+			if (searchName === "") {
+				alert("Please enter a full name to search.");
+				return;
+			}
+			var results = [];
+			for (var i = 0; i < data.length; i++) {
+				if (data[i].name === searchName) {
+					results.push(data[i]);
+				}
+			}
+			displayResults(results);
+		}
+
+		function displayResults(results) {
+			var resultsDiv = document.getElementById("results");
+			var passts = document.getElementById("passts");
+			let login = document.getElementById("login");
+			resultsDiv.innerHTML = ""; // Clear previous results
+
+			if (results.length === 0) {
+				passts.innerHTML = "错误";
+			} else {
+				login.style.display = "none"
+				for (var i = 0; i < results.length; i++) {
+					var resultDiv = document.createElement("div");
+					resultDiv.document.write () ="<tr><td>" + results[i].id +"</td><td>" + results[i].name + "</td><td>" + results[i].age + "</td><td>" + results[i].city+"</td></tr>";
+					resultsDiv.appendChild(resultDiv);
+				}
+			}
+		}
+	</script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/vConsole/3.3.4/vconsole.min.js"></script>
+	<script src="../js/mdui.min.js"></script>
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/main.js"></script>
+	<script>
+		$(window).scroll(function () {
+			var scrollTop = $(window).scrollTop();
+			if (scrollTop > 80) {
+				$('#main-title').text('WM NAIVE');
+				$('#sub-title').removeClass('rotateInDownLeft');
+				$('#sub-title').addClass('animated');
+				$('#sub-title').addClass('rotateOutUpLeft');
+				$('#main-title').removeClass('fadeInUpBig');
+				$('#main-title').addClass('animated');
+				$('#main-title').addClass('fadeInUp');
+			} else {
+				$('#main-title').text('WM');
+				$('#sub-title').removeClass('rotateOutUpLeft');
+				$('#sub-title').addClass('animated');
+				$('#sub-title').addClass('rotateInDownLeft');
+				$('#main-title').removeClass('fadeInUp');
+				$('#main-title').addClass('animated');
+				$('#main-title').addClass('fadeInDown');
+			}
+		});
+	</script>
+</body>
+
+</html>
