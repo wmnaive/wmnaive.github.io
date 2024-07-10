@@ -21,7 +21,7 @@
 		}
 
 		.widthlo {
-			width: 444px;
+			width: 100%;
 		}
 
 		.mdui-btn {
@@ -102,7 +102,6 @@
 			<table class="mdui-table mdui-table-hoverable">
 				<thead>
 					<tr>
-						<th>#</th>
 						<th>First Name</th>
 						<th>Last Name</th>
 						<th>Username</th>
@@ -157,7 +156,7 @@
 				login.style.display = "none"
 				for (var i = 0; i < results.length; i++) {
 					var resultDiv = document.createElement("div");
-					resultDiv.document.write () ="<tr><td>" + results[i].id +"</td><td>" + results[i].name + "</td><td>" + results[i].age + "</td><td>" + results[i].city+"</td></tr>";
+					resultDiv.document.write ("<tr><td>" + results[i].id +"</td><td>" + results[i].name + "</td><td>" + results[i].age + "</td><td>" + results[i].city+"</td></tr>");
 					resultsDiv.appendChild(resultDiv);
 				}
 			}
