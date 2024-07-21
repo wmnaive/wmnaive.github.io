@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+	<meta name="renderer" content="webkit" />
+	<meta name="force-rendering" content="webkit" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="author" content="WM" />
+	<meta name="description" content="高效插入工具" />
+	<meta name="keywords" content="高效文本插入" />
+	<link rel="stylesheet" href="../css/mdui.min.css" />
+	<link rel="stylesheet" href="../css/load.css">
+	<link rel="stylesheet" href="https://unpkg.com/animate.css@3.5.2/animate.min.css" />
+	<title>WM NIAVE 文本高效处理工具</title>
+	<style>
+		.mdui-card {
+			width: 300px;
+			border-radius: 10px;
+		}
+
+		.widthlo {
+			width: 444px;
+		}
+
+		.mdui-btn {
+			border-radius: 5px;
+		}
+	</style>
+</head>
+
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-layout-auto">
+
+	<div class="loading-animations" id="loading-warp">
+		<div class="la-ball-clip-rotate">
+			<div></div>
+		</div>
+
+	</div>
+	<div class="mdui-appbar mdui-appbar-fixed">
+		<div class="mdui-toolbar mdui-color-theme">
+			<button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#main-drawer'}"><i
+					class="mdui-icon material-icons">menu</i></button>
+			<a href="javascript:;" class="mdui-typo-title" id="main-title">WM NAIVE</a>
+			<div class="mdui-toolbar-spacer"></div>
+			<button class="mdui-btn mdui-btn-icon" mdui-menu="{target:'#main-menu'}"><i
+					class="mdui-icon material-icons">more_vert</i></button>
+			<ul class="mdui-menu" id="main-menu">
+				<li class="mdui-menu-item">
+					<a href="javascript:tip();" class="mdui-ripple">公告</a>
+				</li>
+				<li class="mdui-menu-item">
+					<a href="javascript:changeTheme();" class="mdui-ripple">切换主题</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="mdui-drawer" id="main-drawer">
+		<img height="20%" width="100%" src="../images/material.png" />
+		<ul class="mdui-list">
+			<li class="mdui-subheader">WebSite</li>
+			<li class="mdui-list-item mdui-ripple" onclick="window.location.href='https://www.okck.fun/';">
+				<i class="mdui-list-item-icon mdui-icon material-icons">home</i>
+				<div class="mdui-list-item-content">主页</div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="mdui-color-theme mdui-typo-display-1 mdui-text-color-white mdui-text-center" style="padding:80px;">
+		<div id="sub-title"><span style="font-size:60px;">高效</span>文本插入工具</div>
+	</div>
+
+	<div class="mdui-container mdui-m-y-2">
+		<div class="mdui-textfield">
+			<textarea class="mdui-textfield-input" rows="10" placeholder="主页链接" id="inputText1"></textarea>
+			<div class="mdui-textfield-helper">请确保没有空行</div>
+		</div>
+		<div class="mdui-textfield mdui-textfield-floating-label">
+			<label class="mdui-textfield-label">作者名称</label>
+			<textarea class="mdui-textfield-input" id="insertText2"></textarea>
+
+		</div>
+		<button onclick="insertText()" class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent"
+			mdui-tooltip="{content: '在链接后方插入作者名称', position: 'top'}">一键插入</button>
+		<div class="mdui-textfield">
+			<textarea class="mdui-textfield-input" rows="10" placeholder="输出结果" id="outputText" disabled></textarea>
+		</div>
+		<div class="mdui-container">
+			<button class="mdui-btn mdui-btn-raised mdui-ripple" mdui-tooltip="{content: '将输出结果一键复制', position: 'top'}"
+				onclick="copyText()">一键复制</button>
+			<button class=" mdui-btn mdui-btn-raised mdui-ripple"
+				mdui-tooltip="{content: '将输出结果保存为TXT文件(以作者名称命名)', position: 'top'}"
+				onclick="saveTextAsFile()">一键保存</button>
+		</div>
+	</div>
+
+
+	<!-- footer -->
+	<div class="mdui-divider">
+	</div>
+	<div class="mdui-p-y-2 mdui-color-theme mdui-text-color-white mdui-text-center">
+		<a class="mdui-btn mdui-btn-icon" href="mailto:169973282@qq.com"><i
+				class="mdui-icon material-icons">email</i></a><br>
+		<span>您在本页面停留了：<span id="stayTime"></span></span><br>
+		<span>©Copyright 2024 WM</span>
+	</div>
+	<script src="https://cdn.bootcdn.net/ajax/libs/vConsole/3.3.4/vconsole.min.js"></script>
+	<script src="../js/mdui.min.js"></script>
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/main.js"></script>
+	<script>
+		async function copyText() {
+			var copyText = document.getElementById("outputText");
+			if (copyText.value.trim() === "") {
+				mdui.snackbar({
+					message: '内容为空，无法复制',
+					position: 'right-top'
+				});
+				return;
+			}
+			// 去除最后一行空行
+			var lines = copyText.value.split('\n');
+			var filteredLines = lines.filter(line => line.trim() !== '');
+			var processedText = filteredLines.join('\n');
+			try {
+				await navigator.clipboard.writeText(processedText);
+				mdui.snackbar({
+					message: '复制成功！！！',
+					position: 'right-top'
+				});
+			} catch (err) {
+				console.error('无法复制内容： ', err);
+			}
+		}
+
+
+
+		function insertText() {
+			const inputText = document.getElementById("inputText1").value;
+			const insertText = document.getElementById("insertText2").value;
+			if (inputText.trim() === "" || insertText.trim() === "") {
+				mdui.snackbar({
+					message: '输入内容不完整',
+					position: 'right-top'
+				});
+				return;
+			}
+			const lines = inputText.split('\n');
+			let result = '';
+			lines.forEach(line => {
+				result += `${line}----${insertText}\n`;
+				if (line !== lines[lines.length - 1]) {
+					result += '';
+				}
+			});
+			mdui.snackbar({
+				message: '执行成功！！！',
+				position: 'right-top'
+			});
+			document.getElementById("outputText").value = result;
+		}
+
+		function saveTextAsFile() {
+			var textToSave = document.getElementById("outputText").value;
+			if (textToSave === undefined || textToSave.trim() === "") {
+				mdui.snackbar({
+					message: '内容为空无法保存',
+					position: 'right-top'
+				});
+				return;
+			}
+			var fileName = textToSave.split('----')[1].split('\n')[0];
+			// 移除最后一行的换行符
+			textToSave = textToSave.slice(0, -1);
+			var blob = new Blob([textToSave], {
+				type: "text/plain;charset=utf-8"
+			});
+			var link = document.createElement("a");
+			link.href = URL.createObjectURL(blob);
+			link.download = fileName + ".txt";
+			link.style.display = "none";
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		}
+
+	</script>
+	<script>
+		$(window).scroll(function () {
+			var scrollTop = $(window).scrollTop();
+			if (scrollTop > 80) {
+				$('#main-title').text('WM NAIVE');
+				$('#sub-title').removeClass('rotateInDownLeft');
+				$('#sub-title').addClass('animated');
+				$('#sub-title').addClass('rotateOutUpLeft');
+				$('#main-title').removeClass('fadeInUpBig');
+				$('#main-title').addClass('animated');
+				$('#main-title').addClass('fadeInUp');
+			} else {
+				$('#main-title').text('WM');
+				$('#sub-title').removeClass('rotateOutUpLeft');
+				$('#sub-title').addClass('animated');
+				$('#sub-title').addClass('rotateInDownLeft');
+				$('#main-title').removeClass('fadeInUp');
+				$('#main-title').addClass('animated');
+				$('#main-title').addClass('fadeInDown');
+			}
+		});
+	</script>
+</body>
+
+</html>

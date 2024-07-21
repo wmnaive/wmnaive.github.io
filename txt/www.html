@@ -1,0 +1,59 @@
+<script>
+
+    function copyText() {
+        var copyText = document.getElementById("outputText");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); 
+        document.execCommand("copy");
+        mdui.snackbar({
+            message: '复制成功！！！',
+            position: 'right-top'
+        });
+    }
+
+    function insertText() {
+        const inputText = document.getElementById("inputText1").value;
+        const insertText = document.getElementById("insertText2").value;
+        const lines = inputText.split('\n');
+        let result = '';
+        lines.forEach(line => {
+            result += `${line}----${insertText}\n`;
+            if (line !== lines[lines.length - 1]) {
+                result += '';
+            }
+        });
+        mdui.snackbar({
+            message: '执行成功！！！',
+            position: 'right-top'
+        });
+        document.getElementById("outputText").value = result;
+    }
+
+
+
+    function saveTextAsFile() {
+    var textToSave = document.getElementById("outputText").value;
+    if (textToSave === undefined || textToSave.trim() === "") {
+        mdui.snackbar({
+            message: '内容为空无法保存',
+            position: 'right-top'
+        });
+        return;
+    }
+    var fileName = textToSave.split('----')[1].split('\n')[0];
+    // 移除最后一行的换行符
+    textToSave = textToSave.slice(0, -1);
+    var blob = new Blob([textToSave], {
+        type: "text/plain;charset=utf-8"
+    });
+    var link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = fileName + ".txt";
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+
+</script>
